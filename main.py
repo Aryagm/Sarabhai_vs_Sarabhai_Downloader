@@ -22,7 +22,7 @@ for episode in episodes:
 episode_names = [x.split("/")[-2] for x in base_links]
 
 first_level_links = []
-for episode in tqdm.tqdm(base_links[:5]):
+for episode in tqdm.tqdm(base_links):
     page = requests.get(episode)
     soup = bs4.BeautifulSoup(page.text, "html.parser")
     # episode__player class:
