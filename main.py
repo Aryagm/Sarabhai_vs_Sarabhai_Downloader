@@ -42,14 +42,15 @@ for link in tqdm.tqdm(first_level_links):
 
 os.mkdir("episodes")
 
-counter = 0
+counter = 1
 
-for download_link, episode_name in zip(download_links, episode_names):
+for download_link, episode_name in tqdm.tqdm(zip(download_links, episode_names), total=len(download_links)):
     # extract url from download_link:
     extractor = URLExtract()
     url = extractor.find_urls(download_link)[0]
     # download the video:
-    with open(f'./episodes/{counter} | {episode_name}.mp4', 'wb') as f:
+    with open(f'./episodes/{counter} - {episode_name}.mp4', 'wb') as f:
         f.write(requests.get(url).content)
     counter += 1
+
 print("Done!")
