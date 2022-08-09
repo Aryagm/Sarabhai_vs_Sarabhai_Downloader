@@ -19,8 +19,10 @@ base_links = []
 for episode in episodes:
     base_links.append(episode.a['href'])
 
+episode_names = [x.split("/")[-2] for x in base_links]
+
 first_level_links = []
-for episode in tqdm.tqdm(base_links):
+for episode in tqdm.tqdm(base_links[:5]):
     page = requests.get(episode)
     soup = bs4.BeautifulSoup(page.text, "html.parser")
     # episode__player class:
@@ -42,13 +44,12 @@ os.mkdir("episodes")
 
 counter = 0
 
-for download_link in tqdm.tqdm(download_links):
+for download_link, episode_name in zip(download_links, episode_names):
     # extract url from download_link:
     extractor = URLExtract()
     url = extractor.find_urls(download_link)[0]
     # download the video:
-    with open(f'./episodes/{counter}.mp4', 'wb') as f:
+    with open(f'./episodes/{counter} | {episode_name}.mp4', 'wb') as f:
         f.write(requests.get(url).content)
-        counter += 1
-
+    counter += 1
 print("Done!")
